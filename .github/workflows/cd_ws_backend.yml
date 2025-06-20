@@ -31,4 +31,4 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@3.109.206.225 -t "
             docker stop ws_backend || true &&
             docker rm ws_backend || true &&
-            docker run --name ws_backend -d -p 9000:9000 ${{ secrets.DOCKERHUB_USERNAME }}/monorepo-ws-backend:${{ github.sha }}"
+            docker run --name ws_backend -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/monorepo-ws-backend:${{ github.sha }}"
