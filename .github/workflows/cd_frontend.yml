@@ -26,3 +26,8 @@ jobs:
             - DATABASE_URL=${{ secrets.DATABASE_URL }}
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/monorepo-frontend:${{ github.sha }}
+      - name: Deploy to Server
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
+          chmod 700 /home/runner/ssh_key
+          ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@3.109.206.225 -t "docker stop frontend && docker run --name frontend -d -p 3000:3000 ${{ secrets.DOCKERHUB_USERNAME }}/monorepo-frontend:${{ github.sha }}"

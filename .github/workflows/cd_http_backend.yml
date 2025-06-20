@@ -24,3 +24,8 @@ jobs:
           file: ./docker/Dockerfile.http
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/monorepo-http-backend:${{ github.sha }}
+      - name: Deploy to Server
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
+          chmod 700 /home/runner/ssh_key
+          ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@3.109.206.225 -t "docker stop http_backend && docker run --name http_backend -d -p 9000:9000 ${{ secrets.DOCKERHUB_USERNAME }}/monorepo-http-backend:${{ github.sha }}"

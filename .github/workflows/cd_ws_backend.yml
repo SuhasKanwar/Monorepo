@@ -24,3 +24,8 @@ jobs:
           file: ./docker/Dockerfile.ws
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/monorepo-ws-backend:${{ github.sha }}
+      - name: Deploy to Server
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
+          chmod 700 /home/runner/ssh_key
+          ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@3.109.206.225 -t "docker stop ws_backend && docker run --name ws_backend -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/monorepo-ws-backend:${{ github.sha }}"
