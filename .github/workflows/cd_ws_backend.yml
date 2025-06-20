@@ -1,4 +1,4 @@
-name: Deploy HTTP Backend
+name: Deploy WS Backend
 on:
   push:
     branches: [ main ]
@@ -21,6 +21,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./docker/Dockerfile.http
+          file: ./docker/Dockerfile.ws
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/monorepo-http-backend:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/monorepo-ws-backend:${{ github.sha }}

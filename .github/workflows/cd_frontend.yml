@@ -1,4 +1,4 @@
-name: Deploy HTTP Backend
+name: Deploy Frontend
 on:
   push:
     branches: [ main ]
@@ -21,6 +21,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./docker/Dockerfile.http
+          file: ./docker/Dockerfile.frontend
+          build-args: |
+            - DATABASE_URL=${{ secrets.DATABASE_URL }}
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/monorepo-http-backend:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/monorepo-frontend:${{ github.sha }}
